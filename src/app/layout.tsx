@@ -22,7 +22,7 @@ const sans = Jost({ subsets: ["latin"], variable: "--font-jost", display: "swap"
 const hand = Caveat({ subsets: ["latin"], variable: "--font-caveat", display: "swap" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: new URL(site.url || "http://localhost:3000"),
   title: {
     default: "Hollydaff — Handmade Forever Flowers, Bouquets & Gifts",
     template: "%s · Hollydaff",

@@ -1,12 +1,35 @@
 // Central business details. Everything customer-facing reads from here, so update it
 // in one place (WhatsApp number, email, domain, prices live in products.ts).
 
+function resolveSiteUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const vercelProdUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  const vercelUrl = process.env.VERCEL_URL?.trim();
+
+  let target =
+    envUrl ||
+    (vercelProdUrl ? `https://${vercelProdUrl}` : "") ||
+    (vercelUrl ? `https://${vercelUrl}` : "") ||
+    "http://localhost:3000";
+
+  if (!/^https?:\/\//i.test(target)) {
+    target = `https://${target}`;
+  }
+
+  try {
+    const parsed = new URL(target);
+    return parsed.href.replace(/\/$/, "");
+  } catch {
+    return "http://localhost:3000";
+  }
+}
+
 export const site = {
   name: "Hollydaff",
   tagline: "Handmade with heart",
   description:
     "Handmade pipe-cleaner flowers that never wilt — bouquets, flower baskets, mini pots, keychains, car hangings and gift hampers. Custom & bulk orders, shipped across India.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: resolveSiteUrl(),
   founder: "Taniya",
   location: {
     city: "Ranchi",
